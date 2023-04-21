@@ -1,0 +1,51 @@
+debug/record_extro_wloop.h5:
+	b=0:
+		cv:
+			 <HDF5 dataset "cv": shape (30,), type "<f8">
+		err:
+			 <HDF5 dataset "err": shape (30,), type "<f8">
+	b=1:
+		cv:
+			 <HDF5 dataset "cv": shape (30,), type "<f8">
+		err:
+			 <HDF5 dataset "err": shape (30,), type "<f8">
+	b=2:
+		cv:
+			 <HDF5 dataset "cv": shape (30,), type "<f8">
+		err:
+			 <HDF5 dataset "err": shape (30,), type "<f8">
+	b=3:
+		cv:
+			 <HDF5 dataset "cv": shape (30,), type "<f8">
+		err:
+			 <HDF5 dataset "err": shape (30,), type "<f8">
+	b=4:
+		cv:
+			 <HDF5 dataset "cv": shape (30,), type "<f8">
+		err:
+			 <HDF5 dataset "err": shape (30,), type "<f8">
+	b=5:
+		cv:
+			 <HDF5 dataset "cv": shape (30,), type "<f8">
+		err:
+			 <HDF5 dataset "err": shape (30,), type "<f8">
+	b=6:
+		cv:
+			 <HDF5 dataset "cv": shape (30,), type "<f8">
+		err:
+			 <HDF5 dataset "err": shape (30,), type "<f8">
+	b=7:
+		cv:
+			 <HDF5 dataset "cv": shape (30,), type "<f8">
+		err:
+			 <HDF5 dataset "err": shape (30,), type "<f8">
+	b=8:
+		cv:
+			 <HDF5 dataset "cv": shape (30,), type "<f8">
+		err:
+			 <HDF5 dataset "err": shape (30,), type "<f8">
+	b=9:
+		cv:
+			 <HDF5 dataset "cv": shape (30,), type "<f8">
+		err:
+			 <HDF5 dataset "err": shape (30,), type "<f8">
