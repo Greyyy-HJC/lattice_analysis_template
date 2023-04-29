@@ -4,6 +4,8 @@ Constants used in the lattice package.
 import numpy as np
 
 GEV_FM = 0.1973269631  # 1 = 0.197 GeV . fm
+CF = 4 / 3 # color factor
+NF = 3 # number of flavors
 
 
 def lat_unit_convert(val, a, Ls, dimension):
