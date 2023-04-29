@@ -1,6 +1,6 @@
 '''
 Used to print the structure of HDF5 files.
-Usage: python print_h5.py file1.h5 file2.h5 ...
+Usage: python print_h5_structure.py file1.h5 file2.h5 ...
 '''
 
 import argparse

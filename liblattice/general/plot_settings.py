@@ -1,6 +1,6 @@
-'''
+"""
 Here are the settings for plots in liblattice.
-'''
+"""
 
 #! color settings
 grey = "#808080"
@@ -17,11 +17,43 @@ grape = "#635BB1"
 violet = "#7C5AB8"
 fuschia = "#C3559F"
 
-color_ls = [blue, orange, green, red, violet, fuschia, turquoise, grape, lime, peach, sunkist, yellow]
+color_ls = [
+    blue,
+    orange,
+    green,
+    red,
+    violet,
+    fuschia,
+    turquoise,
+    grape,
+    lime,
+    peach,
+    sunkist,
+    yellow,
+]
 
 
 #! marker settings
-marker_ls = ['.', 'o', 's', 'P', 'X', '*', 'p', 'D', '<', '>', '^', 'v', '1', '2', '3', '4', '+', 'x']
+marker_ls = [
+    ".",
+    "o",
+    "s",
+    "P",
+    "X",
+    "*",
+    "p",
+    "D",
+    "<",
+    ">",
+    "^",
+    "v",
+    "1",
+    "2",
+    "3",
+    "4",
+    "+",
+    "x",
+]
 
 
 #! font settings
@@ -31,6 +63,7 @@ font_config = {
     "font.serif": ["Times New Roman"],
 }
 from matplotlib import rcParams
+
 rcParams.update(font_config)
 
 

@@ -1,5 +1,9 @@
 # lattice_analysis_template
 This is a template repo for lattice analysis, especially under LaMET
+To initialize the environment, run
+```
+bash init.sh
+```
 
 ## Folder structure
 ```
@@ -16,11 +20,13 @@ log folder: log files and the plots, such as ground state fit result and the plo
 
 scripts folder: scripts for specific project, not for general template
 
-liblattice folder: the liblattice library, which is general for most lattice analysis projects, subfolders are organized by the analysis steps
+liblattice folder: the liblattice library, which is general for most lattice analysis projects, subfolders are organized by the analysis steps, most py files contain an example usage at the end of the files.
     pre_process: read and pre-process the raw data, like dispersion relation, bootstrap, select out the bad configs, etc.
     gs_fit: ground state fit
     coor_to_mom: extrapolation in the coordinate space and FT
     matching: matching
     physics_limit: large momentum extrapolation, continuum limit, physical pion mass extrapolation, etc.
     general: other general functions, such as constants, plot settings, etc.
+
+test_data folder: test data for the liblattice library.
 ```

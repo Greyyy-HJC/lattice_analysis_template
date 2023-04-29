@@ -1,9 +1,11 @@
-'''
+"""
 Here are functions related to resampling, including bootstrap and jackknife.
-'''
+You can find an example usage at the end of this file.
+"""
 
 import numpy as np
 import gvar as gv
+
 
 def bootstrap(data, samp_times, axis=0):
     """Do bootstrap resampling on the data, take random samples from the data and average them.
@@ -21,7 +23,7 @@ def bootstrap(data, samp_times, axis=0):
     N_conf = data.shape[axis]
     conf_bs = np.random.choice(N_conf, (samp_times, N_conf), replace=True)
     bs_ls = np.take(data, conf_bs, axis=axis)
-    bs_ls = np.mean(bs_ls, axis=axis+1)
+    bs_ls = np.mean(bs_ls, axis=axis + 1)
 
     return bs_ls
 
@@ -40,9 +42,10 @@ def bootstrap_with_seed(data, seed, axis=0):
     data = np.array(data)
 
     bs_ls = np.take(data, seed, axis=axis)
-    bs_ls = np.mean(bs_ls, axis=axis+1)
+    bs_ls = np.mean(bs_ls, axis=axis + 1)
 
     return bs_ls
+
 
 def jackknife(data, axis=0):
     """Do jackknife resampling on the data, drop one data each time and average the rest.
@@ -58,7 +61,7 @@ def jackknife(data, axis=0):
 
     N_conf = data.shape[axis]
     temp = np.swapaxes(data, 0, axis)
-    conf_jk = [ np.delete(temp, i, axis=0) for i in range(N_conf) ]
+    conf_jk = [np.delete(temp, i, axis=0) for i in range(N_conf)]
     jk_ls = np.mean(conf_jk, axis=1)
 
     jk_ls = np.swapaxes(jk_ls, 0, axis)
@@ -84,6 +87,7 @@ def jk_ls_avg(jk_ls):
 
     return gv.gvar(mean, cov)
 
+
 def jk_dic_avg(dic):
     """Average the jackknife dictionary, the axis=0 of each key is the jackknife samples.
 
@@ -93,7 +97,7 @@ def jk_dic_avg(dic):
     Returns:
         dict: dict of gvar list after averaging
     """
-    #* length of each key
+    # * length of each key
     l_dic = {key: len(dic[key][0]) for key in dic}
 
     conf_ls = []
@@ -102,7 +106,7 @@ def jk_dic_avg(dic):
         for key in dic:
             temp.append(list(dic[key][n_conf]))
 
-        conf_ls.append(sum(temp, []))  #* flatten the list
+        conf_ls.append(sum(temp, []))  # * flatten the list
 
     gv_ls = list(jk_ls_avg(conf_ls))
 
@@ -133,6 +137,7 @@ def bs_ls_avg(bs_ls):
 
     return gv.gvar(mean, cov)
 
+
 def bs_dic_avg(dic):
     """Average the bootstrap dictionary, the axis=0 of each key is the bootstrap samples.
 
@@ -142,7 +147,7 @@ def bs_dic_avg(dic):
     Returns:
         dict: dict of gvar list after averaging
     """
-    #* length of each key
+    # * length of each key
     l_dic = {key: len(dic[key][0]) for key in dic}
 
     conf_ls = []
@@ -151,7 +156,7 @@ def bs_dic_avg(dic):
         for key in dic:
             temp.append(list(dic[key][n_conf]))
 
-        conf_ls.append(sum(temp, []))  #* flatten the list
+        conf_ls.append(sum(temp, []))  # * flatten the list
 
     gv_ls = list(bs_ls_avg(conf_ls))
 
@@ -163,6 +168,7 @@ def bs_dic_avg(dic):
             gv_dic[key].append(temp)
 
     return gv_dic
+
 
 def gv_ls_to_samples_corr(gv_ls, N_samp):
     """Convert gvar list to gaussian distribution with correlation.
@@ -182,6 +188,7 @@ def gv_ls_to_samples_corr(gv_ls, N_samp):
 
     return samp_ls
 
+
 def gv_dic_to_samples_corr(gv_dic, N_samp):
     """Convert each key under the gvar dictionary to gaussian distribution with correlation.
 
@@ -192,8 +199,8 @@ def gv_dic_to_samples_corr(gv_dic, N_samp):
     Returns:
         dict: samp_dic with one more dimension than gv_dic
     """
-    
-    #* length of each key
+
+    # * length of each key
     l_dic = {key: len(gv_dic[key]) for key in gv_dic}
 
     flatten_ls = []
@@ -218,11 +225,11 @@ def gv_dic_to_samples_corr(gv_dic, N_samp):
     return samp_dic
 
 
-if __name__ == '__main__':
-    '''
+if __name__ == "__main__":
+    """
     check these functions can work normally
-    you should get a plot with three sets of errorbar, which are almost the same 
-    '''
+    you should get a plot with three sets of errorbar, which are almost the same
+    """
 
     from liblattice.general.general_plot_funcs import errorbar_ls_plot
 
@@ -240,10 +247,17 @@ if __name__ == '__main__':
 
     gv_ls_3 = gv.dataset.avg_data(distribution, bstrap=True)
 
-
     # make a errorbar list plot with three lists
     x_ls = [np.arange(10), np.arange(10), np.arange(10)]
     y_ls = [gv.mean(gv_ls_1), gv.mean(gv_ls_2), gv.mean(gv_ls_3)]
     yerr_ls = [gv.sdev(gv_ls_1), gv.sdev(gv_ls_2), gv.sdev(gv_ls_3)]
 
-    errorbar_ls_plot(x_ls, y_ls, yerr_ls, label_ls=['1','2','3'], title="test", ylim=None, save=True)
+    errorbar_ls_plot(
+        x_ls,
+        y_ls,
+        yerr_ls,
+        label_ls=["1", "2", "3"],
+        title="test",
+        ylim=None,
+        save=True,
+    )
