@@ -43,7 +43,7 @@ def ra_im_fcn(ra_t, ra_tau, p):
         + p["im_c2"] * (np.exp(-de * (ra_t - ra_tau)) + np.exp(-de * ra_tau))
         + p["im_c3"] * np.exp(-de * ra_t)
     )
-    val = numerator / (1 + p["im_c1"] * np.exp(-de * ra_t))
+    val = numerator / (1 + p["re_c1"] * np.exp(-de * ra_t)) #* note here you should also divide by the 2pt real
 
     return val
 

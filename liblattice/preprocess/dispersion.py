@@ -8,6 +8,8 @@ import numpy as np
 import gvar as gv
 import matplotlib.pyplot as plt
 
+from matplotlib.ticker import MultipleLocator
+
 from liblattice.general.constants import *
 from liblattice.general.plot_settings import *
 
@@ -109,6 +111,16 @@ def disp_relation_plot(a, Ls, mom_ls, meff_ls, title, save=True):
         color=blue,
         alpha=0.5,
     )
+
+    xmajor = MultipleLocator(0.5)
+    xminor = MultipleLocator(0.1)
+    ax.xaxis.set_major_locator(xmajor)
+    ax.xaxis.set_minor_locator(xminor)
+    
+    ymajor = MultipleLocator(0.5)
+    yminor = MultipleLocator(0.1)
+    ax.yaxis.set_major_locator(ymajor)
+    ax.yaxis.set_minor_locator(yminor)
 
     ax.tick_params(direction="in", top="on", right="on", **ls_p)
     ax.grid(linestyle=":")
