@@ -12,7 +12,7 @@ from liblattice.coor_to_mom.fit_funcs import *
 from liblattice.general.plot_settings import *
 
 
-extrapolated_length = 100  # todo do the extrapolation in the coordinate space till lambda = extrapolated_length
+extrapolated_length = 200  # todo do the extrapolation in the coordinate space till lambda = extrapolated_length
 
 lambda_label = r"$\lambda$ = x P^z"
 
@@ -38,7 +38,7 @@ def z_ls_to_lam_ls(z_ls, a, Ls, mom):
     return list(lam_array)
 
 
-def extrapolation_quasi(lam_ls, re_gv, im_gv, fit_idx_range):
+def extrapolate_quasi(lam_ls, re_gv, im_gv, fit_idx_range):
     """fit and extrapolate the quasi distribution at large lambda, note here we need to concatenate the data points and extrapolated points together
 
     Args:

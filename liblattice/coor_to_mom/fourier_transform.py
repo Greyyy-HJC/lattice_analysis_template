@@ -7,6 +7,7 @@ import numpy as np
 
 def sum_ft(x_ls, fx_ls, delta_x, output_k):
     """FT: f(x) -> f(k), coordinate to momentum by discrete sum, produce complex numbers
+    the f(x) cannot be gvar list, because of the complex calculation
 
     Args:
         x_ls (list): x list of f(x)
@@ -26,6 +27,7 @@ def sum_ft(x_ls, fx_ls, delta_x, output_k):
 
 def sum_ft_re_im(x_ls, fx_re_ls, fx_im_ls, delta_x, output_k):
     """FT: f(x) -> f(k), coordinate to momentum by discrete sum, produce real and imaginary part separately
+    the f(x) can be gvar list
 
     Args:
         x_ls (list): x list of f(x)
@@ -93,13 +95,3 @@ def sum_ft_inv_re_im(k_ls, fk_re_ls, fk_im_ls, delta_k, output_x):
     )
 
     return val_re, val_im
-
-
-#todo FT a gvar list
-def gv_ls_sum_ft():
-
-    return
-
-def gv_ls_sum_ft_re_im():
-
-    return
