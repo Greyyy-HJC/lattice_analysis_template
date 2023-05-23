@@ -13,7 +13,7 @@ def lat_unit_convert(val, a, Ls, dimension):
 
     Args:
         val (float): The value to be converted.
-        a (float): The lattice spacing.
+        a (float): The lattice spacing in fm.
         Ls (int): The lattice size in the space directions.
         dimension (str): 'P'(like P=8), 'M'(like effective mass).
     """
