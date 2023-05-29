@@ -23,3 +23,22 @@ def gv_dic_save_to_h5(gv_dic, N_samp, file_path):
         temp = f.create_dataset(key, data=dist)
     f.close()
     return
+
+def find_key(dict, key_words):
+    """find the keys that contains the key words in a dictionary
+
+    Args:
+        dict (dict): the dictionary to search
+        key_words (string): the key words to search
+
+    Returns:
+        list: a list of keys that contains the key words
+    """
+
+    key_ls = []
+    for key in dict:
+        if key_words in key:
+            key_ls.append(key)
+
+    return key_ls
+
