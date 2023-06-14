@@ -5,7 +5,7 @@ from liblattice.coor_to_mom.extrapolation_fit import *
 
 #! extrapolation
 
-ready_for_extrapolation = gv.load("debug/ready_for_extrapolation.pkl") #* 220t_mom8
+ready_for_extrapolation = gv.load("ready_for_extrapolation.pkl") #* 220t_mom8
 
 
 fix_idx_range_dic = {}
@@ -52,7 +52,8 @@ for b in range(1, 6):
 #! do the FT
 from liblattice.coor_to_mom.fourier_transform import *
 
-x_ls = np.linspace(-1.5, 1.5, 200)
+# x_ls = np.linspace(-1.5, 1.5, 200)
+x_ls = np.linspace(0.12, 1.0, 100) #todo x list for light-cone TMDPDF
 
 mom_beam_re = {}
 mom_beam_im = {}
@@ -74,7 +75,7 @@ for b in range(1, 6):
     mom_beam_im['b{}'.format(b)] = temp_im
 
 from liblattice.general.general_plot_funcs import *
-fill_between_ls_plot([x_ls for b in range(1,6)], [gv.mean(mom_beam_re['b{}'.format(b)]) for b in range(1,6)], [gv.sdev(mom_beam_re['b{}'.format(b)]) for b in range(1,6)], label_ls=['b={}'.format(b) for b in range(1, 6)], title="220t_mom8_beam_bmix_FT_re", ylim=[-0.5, 2.5])
+fill_between_ls_plot([x_ls for b in range(1,6)], [gv.mean(mom_beam_re['b{}'.format(b)]) for b in range(1,6)], [gv.sdev(mom_beam_re['b{}'.format(b)]) for b in range(1,6)], label_ls=['b={}'.format(b) for b in range(1, 6)], title="220t_mom8_beam_bmix_FT_re", ylim=[-0.5, 2.5], save=False)
 
 
 #! beam function to quasi-TMDPDF, dividing soft function
@@ -88,7 +89,7 @@ def sf_from_mh(mom_sf=0, curr=1): # mom_sf=0 表示做外推后的结果
     else:
         mom_310 = 'inf'
 
-    filename = "debug/soft_whole.hdf5"
+    filename = "soft_whole.hdf5"
     data = h5.File(filename, 'r')['p='+mom_310][:, curr, 1:] # data_all.shape=(n_cfg, curr, b), cur=0表示I-gamma5，cur=1表示gamma^perp+gamma^perp gamma_5
 
     return gv.dataset.avg_data(data, bstrap=True)
@@ -108,7 +109,7 @@ for b in range(1, 6):
     mom_quasi_re['b{}'.format(b)] = list( temp * np.sqrt( soft_dic['b_{}'.format(b)] ) )
 
 
-fill_between_ls_plot([x_ls for b in range(1,6)], [gv.mean(mom_quasi_re['b{}'.format(b)]) for b in range(1,6)], [gv.sdev(mom_quasi_re['b{}'.format(b)]) for b in range(1,6)], label_ls=['b={}'.format(b) for b in range(1, 6)], title="220t_mom8_quasi_bmix_FT_re", ylim=[-0.5, 2])
+fill_between_ls_plot([x_ls for b in range(1,6)], [gv.mean(mom_quasi_re['b{}'.format(b)]) for b in range(1,6)], [gv.sdev(mom_quasi_re['b{}'.format(b)]) for b in range(1,6)], label_ls=['b={}'.format(b) for b in range(1, 6)], title="220t_mom8_quasi_bmix_FT_re", ylim=[-0.5, 2], save=False)
 
 plt.show()
 
@@ -130,6 +131,12 @@ def matching_f(quasi, hard, cs_kernel, x_ls, pz, zeta):
     return lc #* shape = x_ls
 
 from liblattice.general.constants import *
+from RGI_from_mma import RGInt
+
+def hard_kernel_RGI(x, pz):
+    zeta = (2 * x * pz)**2
+    h = RGInt(zeta)
+    return np.exp(h)
 
 def hard_kernel(x, pz): #* 1 loop, from Xiangdong
     mu = 2
@@ -149,8 +156,8 @@ def hard_kernel_Yong(x, pz): #* 1 loop, from Yong
     return h
 
 # cs kernel
-cs_kernel_mh = gv.load('debug/cs_kernel_b_ls_mh.pkl')
-hard = [hard_kernel(x, pz) for x in x_ls]
+cs_kernel_mh = gv.load('cs_kernel_b_ls_mh.pkl')
+hard = [hard_kernel_RGI(x, pz) for x in x_ls]
 zeta = 4
 
 
@@ -166,6 +173,10 @@ print(len(x_ls))
 
 
 
-fill_between_ls_plot([x_ls[110:170] for b in range(1,6)], [gv.mean(light_cone['b{}'.format(b)][110:170]) for b in range(1,6)], [gv.sdev(light_cone['b{}'.format(b)][110:170]) for b in range(1,6)], label_ls=['b={}'.format(b) for b in range(1, 6)], title="220t_mom8_lc_bmix_re", ylim=[-0.2, 0.6])
+# fill_between_ls_plot([x_ls[110:170] for b in range(1,6)], [gv.mean(light_cone['b{}'.format(b)][110:170]) for b in range(1,6)], [gv.sdev(light_cone['b{}'.format(b)][110:170]) for b in range(1,6)], label_ls=['b={}'.format(b) for b in range(1, 6)], title="220t_mom8_lc_bmix_re", save=False)
+
+fill_between_ls_plot([x_ls for b in range(1,6)], [gv.mean(light_cone['b{}'.format(b)]) for b in range(1,6)], [gv.sdev(light_cone['b{}'.format(b)]) for b in range(1,6)], label_ls=['b={}'.format(b) for b in range(1, 6)], title="220t_mom8_lc_bmix_re", save=False)
 
 plt.show()
+
+# %%
