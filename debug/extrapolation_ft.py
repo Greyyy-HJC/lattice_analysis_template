@@ -78,7 +78,7 @@ from liblattice.general.general_plot_funcs import *
 fill_between_ls_plot([x_ls for b in range(1,6)], [gv.mean(mom_beam_re['b{}'.format(b)]) for b in range(1,6)], [gv.sdev(mom_beam_re['b{}'.format(b)]) for b in range(1,6)], label_ls=['b={}'.format(b) for b in range(1, 6)], title="220t_mom8_beam_bmix_FT_re", ylim=[-0.5, 2.5], save=False)
 
 
-#! beam function to quasi-TMDPDF, dividing soft function
+#! beam function to quasi-TMDPDF, times sqrt of the soft function
 
 import h5py as h5
 
@@ -166,7 +166,8 @@ light_cone = {}
 for b in b_ls:
     cs_kernel = cs_kernel_mh[b-1] #* cs_kernel starts from b=1
 
-    temp = matching_f(mom_quasi_re['b{}'.format(b)], hard, cs_kernel, x_ls, pz, zeta)
+    temp = matching_f(mom_quasi_re['b{}'.format(b)], hard, cs_kernel, x_ls, pz, zeta=4)
+
     light_cone['b{}'.format(b)] = temp
 
 print(len(x_ls))
@@ -175,7 +176,7 @@ print(len(x_ls))
 
 # fill_between_ls_plot([x_ls[110:170] for b in range(1,6)], [gv.mean(light_cone['b{}'.format(b)][110:170]) for b in range(1,6)], [gv.sdev(light_cone['b{}'.format(b)][110:170]) for b in range(1,6)], label_ls=['b={}'.format(b) for b in range(1, 6)], title="220t_mom8_lc_bmix_re", save=False)
 
-fill_between_ls_plot([x_ls for b in range(1,6)], [gv.mean(light_cone['b{}'.format(b)]) for b in range(1,6)], [gv.sdev(light_cone['b{}'.format(b)]) for b in range(1,6)], label_ls=['b={}'.format(b) for b in range(1, 6)], title="220t_mom8_lc_bmix_re", save=False)
+fill_between_ls_plot([x_ls for b in range(1,6)], [gv.mean(light_cone['b{}'.format(b)]) for b in range(1,6)], [gv.sdev(light_cone['b{}'.format(b)]) for b in range(1,6)], label_ls=['b={}'.format(b) for b in range(1, 6)], title="220t_mom8_lc_bmix_re", ylim=[-0.2,0.6], save=False)
 
 plt.show()
 

@@ -5,6 +5,8 @@ Basically, these functions are not related to any specific process.
 
 import h5py as h5
 import numpy as np
+import gvar as gv
+import lsqfit as lsf
 
 from liblattice.preprocess.resampling import gv_ls_to_samples_corr
 
@@ -42,3 +44,25 @@ def find_key(dict, key_words):
 
     return key_ls
 
+
+def constant_fit(data):
+    """do a constant fit to the data
+
+    Args:
+        data (list): a list of data to do the constant fit
+
+    Returns:
+        gvar: the result of the constant fit
+    """
+    def fcn(x, p):
+        return x * 0 + p['const']
+    
+    priors = gv.BufferDict()
+    priors['const'] = gv.gvar(0, 100)
+    
+    x = np.arange(len(data))
+    y = list(data)
+    
+    fit_res = lsf.nonlinear_fit(data=(x, y), prior=priors, fcn=fcn, maxit=10000, svdcut=1e-100, fitter='scipy_least_squares')
+    
+    return fit_res.p['const']
