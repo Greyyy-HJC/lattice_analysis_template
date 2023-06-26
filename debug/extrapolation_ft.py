@@ -158,15 +158,13 @@ def hard_kernel_Yong(x, pz): #* 1 loop, from Yong
 # cs kernel
 cs_kernel_mh = gv.load('cs_kernel_b_ls_mh.pkl')
 hard = [hard_kernel_RGI(x, pz) for x in x_ls]
-zeta = 4
-
-
+zeta = 4 #* 4 GeV^2
 
 light_cone = {}
 for b in b_ls:
     cs_kernel = cs_kernel_mh[b-1] #* cs_kernel starts from b=1
 
-    temp = matching_f(mom_quasi_re['b{}'.format(b)], hard, cs_kernel, x_ls, pz, zeta=4)
+    temp = matching_f(mom_quasi_re['b{}'.format(b)], hard, cs_kernel, x_ls, pz, zeta)
 
     light_cone['b{}'.format(b)] = temp
 
