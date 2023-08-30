@@ -54,7 +54,7 @@ def fill_between_plot(x, y, yerr, title, ylim=None, save=True, head=None):
         head (ax, optional): whether make a new figure. Defaults to None, which means make a new figure. If not None, then set head to be the ax of the figure.
     """
 
-    if head == True:
+    if head == None:
         fig = plt.figure(figsize=fig_size)
         ax = plt.axes(plt_axes)
     else:
@@ -89,7 +89,7 @@ def errorbar_ls_plot(x_ls, y_ls, yerr_ls, label_ls, title, ylim=None, save=True,
         head (ax, optional): whether make a new figure. Defaults to None, which means make a new figure. If not None, then set head to be the ax of the figure.
     """
 
-    if head == True:
+    if head == None:
         fig = plt.figure(figsize=fig_size)
         ax = plt.axes(plt_axes)
     else:
@@ -120,7 +120,7 @@ def fill_between_ls_plot(x_ls, y_ls, yerr_ls, label_ls, title, ylim=None, save=T
         head (ax, optional): whether make a new figure. Defaults to None, which means make a new figure. If not None, then set head to be the ax of the figure.
     """
 
-    if head == True:
+    if head == None:
         fig = plt.figure(figsize=fig_size)
         ax = plt.axes(plt_axes)
     else:
@@ -160,7 +160,7 @@ def errorbar_fill_between_ls_plot(
         head (ax, optional): whether make a new figure. Defaults to None, which means make a new figure. If not None, then set head to be the ax of the figure.
     """
 
-    if head == True:
+    if head == None:
         fig = plt.figure(figsize=fig_size)
         ax = plt.axes(plt_axes)
     else:
