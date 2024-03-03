@@ -3,8 +3,10 @@ FT and inverse FT, with chosen convention.
 """
 
 import numpy as np
+from numba import jit
 
 
+# @jit(nopython=True)
 def sum_ft(x_ls, fx_ls, delta_x, output_k):
     """FT: f(x) -> f(k), coordinate to momentum by discrete sum, produce complex numbers
     the f(x) cannot be gvar list, because of the complex calculation
@@ -24,7 +26,7 @@ def sum_ft(x_ls, fx_ls, delta_x, output_k):
 
     return val
 
-
+# @jit(nopython=True)
 def sum_ft_re_im(x_ls, fx_re_ls, fx_im_ls, delta_x, output_k):
     """FT: f(x) -> f(k), coordinate to momentum by discrete sum, produce real and imaginary part separately
     the f(x) can be gvar list
@@ -51,7 +53,7 @@ def sum_ft_re_im(x_ls, fx_re_ls, fx_im_ls, delta_x, output_k):
 
     return val_re, val_im
 
-
+# @jit(nopython=True)
 def sum_ft_inv(k_ls, fk_ls, delta_k, output_x):
     """Inverse FT: f(k) -> f(x), momentum to coordinate by discrete sum, produce complex numbers
 
@@ -70,7 +72,7 @@ def sum_ft_inv(k_ls, fk_ls, delta_k, output_x):
 
     return val
 
-
+# @jit(nopython=True)
 def sum_ft_inv_re_im(k_ls, fk_re_ls, fk_im_ls, delta_k, output_x):
     """Inverse FT: f(k) -> f(x), momentum to coordinate by discrete sum, produce real and imaginary part separately
 

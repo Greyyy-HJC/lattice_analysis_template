@@ -2,13 +2,14 @@
 All those functions that you are not sure where to put them.
 Basically, these functions are not related to any specific process.
 '''
-
+import io
 import h5py as h5
 import numpy as np
 import gvar as gv
 import lsqfit as lsf
 
 from liblattice.preprocess.resampling import gv_ls_to_samples_corr
+from liblattice.preprocess.resampling import bs_ls_avg
 
 def gv_dic_save_to_h5(gv_dic, N_samp, file_path):
     """convert each key of a gvar dictionary to samples, then save the dict to a h5 file
@@ -66,3 +67,38 @@ def constant_fit(data):
     fit_res = lsf.nonlinear_fit(data=(x, y), prior=priors, fcn=fcn, maxit=10000, svdcut=1e-100, fitter='scipy_least_squares')
     
     return fit_res.p['const']
+
+
+def add_error_to_sample(sample_ls):
+    """
+    Add error to each sample in the sample list by combining the sample with the correlation matrix.
+
+    Args:
+        sample_ls (list): List of bootstrap samples, where each sample is a 1D array-like object.
+
+    Returns:
+        list: List of samples with errors, where each sample is a gvar object representing the sample with error.
+
+    """
+    avg = bs_ls_avg(sample_ls)
+    cov = gv.evalcov(avg)
+    # sdev = gv.sdev(avg) # * use sdev will cause the error to be larger
+    with_err_ls = []
+    for sample in sample_ls:
+        with_err_ls.append(gv.gvar(sample, cov))
+
+    return np.array(with_err_ls)
+
+
+# 为了解决 joblib 在处理 GVar 对象时丢失相关性的问题，你可以采用手动序列化和反序列化的方法。
+
+def serialize_gvar(gvar_obj):
+    buffer = io.BytesIO()
+    gv.dump(gvar_obj, buffer)
+    buffer.seek(0)  # 重置缓冲区的位置
+    return buffer.getvalue()
+
+def deserialize_gvar(serialized_gvar):
+    buffer = io.BytesIO(serialized_gvar)
+    buffer.seek(0)  # 重置缓冲区的位置
+    return gv.load(buffer)

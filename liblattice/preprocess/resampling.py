@@ -133,9 +133,14 @@ def bs_ls_avg(bs_ls):
     bs_ls = np.array(bs_ls)
 
     mean = np.mean(bs_ls, axis=0)
-    cov = np.cov(bs_ls, rowvar=False)
 
-    return gv.gvar(mean, cov)
+    # * if only one variable, use standard deviation
+    if len(np.shape(bs_ls)) == 1: 
+        sdev = np.std(bs_ls, axis=0)
+        return gv.gvar(mean, sdev)
+    else:
+        cov = np.cov(bs_ls, rowvar=False)
+        return gv.gvar(mean, cov)
 
 
 def bs_dic_avg(dic):
@@ -148,13 +153,15 @@ def bs_dic_avg(dic):
         dict: dict of gvar list after averaging
     """
     # * length of each key
-    l_dic = {key: len(dic[key][0]) for key in dic}
+    key_ls = list(dic.keys())
+    l_dic = {key: len(dic[key][0]) for key in key_ls}
+    N_conf = len(dic[key_ls[0]])
 
     conf_ls = []
-    for n_conf in range(len(dic[key])):
+    for n in range(N_conf):
         temp = []
         for key in dic:
-            temp.append(list(dic[key][n_conf]))
+            temp.append(list(dic[key][n]))
 
         conf_ls.append(sum(temp, []))  # * flatten the list
 

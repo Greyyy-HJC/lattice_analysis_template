@@ -49,7 +49,7 @@ def meff_fit(t_ls, meff_ls):
     return fit_res.p["meff"]
 
 
-def disp_relation_plot(a, Ls, mom_ls, meff_ls, title, save=True):
+def disp_relation_plot(a, Ls, mom_ls, meff_ls, title, save=True, m0=None, ylim=None):
     """make a dispersion relation plot from gvar meff list and momentum list
 
     Args:
@@ -58,6 +58,7 @@ def disp_relation_plot(a, Ls, mom_ls, meff_ls, title, save=True):
         mom_ls (list): list of momentum numbers, like [0, 2, 4, 6, 8, 10, 12]
         meff_ls (list): gvar list of effective mass
         title (str): title of the plot, also used as the file name to save the plot
+        m0 (float, optional): the static mass of the particle. Defaults to None, if not None, will plot the dispersion relation line with the static mass.
 
     Returns:
         dict: fit result of the dispersion relation fit
@@ -112,6 +113,14 @@ def disp_relation_plot(a, Ls, mom_ls, meff_ls, title, save=True):
         alpha=0.5,
     )
 
+    if m0 != None:
+        ax.plot(
+            p_ls,
+            np.sqrt(p_ls**2 + m0**2),
+            color=red,
+            label="ref"
+        )
+
     xmajor = MultipleLocator(0.5)
     xminor = MultipleLocator(0.1)
     ax.xaxis.set_major_locator(xmajor)
@@ -126,10 +135,12 @@ def disp_relation_plot(a, Ls, mom_ls, meff_ls, title, save=True):
     ax.grid(linestyle=":")
     ax.set_xlabel(r"$P$ / GeV")
     ax.set_ylabel(r"$E$ / GeV")
+    if ylim != None:
+        ax.set_ylim(ylim)
     plt.legend()
     plt.title(title, **fs_p)
     if save == True:
-        plt.savefig("output/plots/" + title + ".pdf", transparent=True)
+        plt.savefig("../output/plots/" + title + ".pdf", transparent=True)
     plt.show()
 
     return fit_res
