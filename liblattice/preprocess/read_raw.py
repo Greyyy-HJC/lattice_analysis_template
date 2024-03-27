@@ -21,7 +21,10 @@ def pt2_to_meff(pt2_array, boundary="periodic"):
         meff_array = np.arccosh( (pt2_array[2:] + pt2_array[:-2]) / (2 * pt2_array[1:-1]) )
 
     elif boundary == "anti-periodic":
-        meff_array = np.arcsinh((pt2_array[:-2] + pt2_array[2:]) / (2 * pt2_array[1:-1]))
+        meff_array = np.arcsinh((pt2_array[2:] + pt2_array[:-2]) / (2 * pt2_array[1:-1]))
+
+    elif boundary == "none":
+        meff_array = np.log(pt2_array[:-1] / pt2_array[1:])
 
     return meff_array
 
