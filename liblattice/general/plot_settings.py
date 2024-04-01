@@ -1,7 +1,7 @@
 """
 Here are the settings for plots in liblattice.
 """
-
+# %%
 #! color settings
 grey = "#808080"
 red = "#FF6F6F"
@@ -72,6 +72,10 @@ fig_width = 6.75  # in inches, 2x as wide as APS column
 gr = 1.618034333  # golden ratio
 fig_size = (fig_width, fig_width / gr)
 
+# * default plot axes for general plots
+plt_axes = [0.12, 0.12, 0.8, 0.8]  # left, bottom, width, height
+fs_p = {"fontsize": 13}  # font size of text, label, ticks
+ls_p = {"labelsize": 13}
 
 #! errorbar plot settings
 errorb = {
@@ -81,3 +85,20 @@ errorb = {
     "capsize": 3,
     "elinewidth": 1,
 }  # circle
+
+
+#! common used labels
+tmin_label = r"$t_{\mathrm{min}}$"
+tmax_label = r"$t_{\mathrm{max}}$"
+t_label = r'${t (a) }$'
+z_label = r'${z (a) }$'
+lambda_label = r"$\lambda = z P^z$"
+meff_label = r'${m}_{\mathrm{eff}}\ (\mathrm{GeV})$'
+
+# %%
+if __name__ == "__main__":
+    import matplotlib.pyplot as plt
+
+    fig = plt.figure(figsize=fig_size)
+    plt.xlabel(lambda_label)
+    plt.show()
