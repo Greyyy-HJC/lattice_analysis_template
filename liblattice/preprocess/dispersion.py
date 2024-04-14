@@ -133,8 +133,8 @@ def disp_relation_plot(a, Ls, mom_ls, meff_ls, title, save=True, m0=None, ylim=N
 
     ax.tick_params(direction="in", top="on", right="on", **ls_p)
     ax.grid(linestyle=":")
-    ax.set_xlabel(r"$P$ / GeV")
-    ax.set_ylabel(r"$E$ / GeV")
+    ax.set_xlabel(r"$P$ / GeV", **fs_p)
+    ax.set_ylabel(r"$E$ / GeV", **fs_p)
     if ylim != None:
         ax.set_ylim(ylim)
     plt.legend()
