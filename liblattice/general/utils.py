@@ -7,6 +7,7 @@ import h5py as h5
 import numpy as np
 import gvar as gv
 import lsqfit as lsf
+from scipy import interpolate
 
 from liblattice.preprocess.resampling import gv_ls_to_samples_corr
 from liblattice.preprocess.resampling import bs_ls_avg
@@ -88,6 +89,32 @@ def add_error_to_sample(sample_ls):
         with_err_ls.append(gv.gvar(sample, cov))
 
     return np.array(with_err_ls)
+
+
+def gv_ls_interpolate(x_ls, gv_ls, x_new, N_samp=100, method="cubic"):
+    """
+    Interpolate a list of gvar objects to a new x list.
+
+    Args:
+        x_ls (list): List of x values.
+        gv_ls (list): List of gvar objects.
+        x_new (list): New x values to interpolate to.
+        N_samp (int, optional): Number of samples. Defaults to 100.
+        method (str, optional): Interpolation method. Defaults to "cubic".
+
+    Returns:
+        gvar: Interpolated gvar object.
+
+    """
+    y_ls_samp = gv_ls_to_samples_corr(gv_ls, N_samp)
+    y_new_samp = []
+    for y_ls in y_ls_samp:
+        x_array = np.array(x_ls)
+        y_array = np.array(y_ls)
+        y_new = interpolate.interp1d(x_array, y_array, kind='cubic')(x_new)
+        y_new_samp.append(y_new)
+
+    return bs_ls_avg(y_new_samp)
 
 
 # 为了解决 joblib 在处理 GVar 对象时丢失相关性的问题，你可以采用手动序列化和反序列化的方法。
