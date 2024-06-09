@@ -7,18 +7,52 @@ import numpy as np
 import gvar as gv
 
 
-def bootstrap(data, samp_times, axis=0):
+def bin_data(data, bin_size, axis=0):
+    """Bin the data by averaging every bin_size samples along the specified axis.
+
+    Args:
+        data (np.ndarray): Data to be binned.
+        bin_size (int): Number of samples per bin.
+        axis (int, optional): Axis along which to bin the data. Defaults to 0.
+
+    Returns:
+        np.ndarray: Binned data.
+    """
+    shape = data.shape
+    # Calculate the length of the axis after binning
+    bin_length = shape[axis] // bin_size
+    # Truncate the data to make its length a multiple of bin_size
+    truncated_length = bin_length * bin_size
+    truncated_data = np.take(data, range(truncated_length), axis=axis)
+    new_shape = list(truncated_data.shape)
+    new_shape[axis] = bin_length
+    new_shape.insert(axis + 1, bin_size)
+    binned_data = (
+        truncated_data.swapaxes(0, axis).reshape(new_shape).mean(axis=axis + 1)
+    )
+    return binned_data.swapaxes(0, axis)
+
+
+def bootstrap(data, samp_times, axis=0, bin=1):
     """Do bootstrap resampling on the data, take random samples from the data and average them.
 
     Args:
-        data (list): data to be resampled
-        samp_times (int): how many times to sample, i.e. how many bootstrap samples to generate
-        axis (int, optional): which axis to resample on. Defaults to 0.
+        data (list): Data to be resampled.
+        samp_times (int): How many times to sample, i.e., how many bootstrap samples to generate.
+        axis (int, optional): Which axis to resample on. Defaults to 0.
+        bin (int, optional): Bin size to reduce autocorrelation. Defaults to 1.
 
     Returns:
-        array: bootstrap samples
+        np.ndarray: Bootstrap samples.
     """
     data = np.array(data)
+
+    #* Set the random seed for reproducibility
+    np.random.seed(2020)
+
+    # Bin the data to reduce autocorrelation
+    if bin > 1:
+        data = bin_data(data, bin, axis=axis)
 
     N_conf = data.shape[axis]
     conf_bs = np.random.choice(N_conf, (samp_times, N_conf), replace=True)
