@@ -70,22 +70,25 @@ def jackknife(data, axis=0):
 
 
 def jk_ls_avg(jk_ls):
-    """Average the 2-D jackknife list, the axis=0 is the jackknife samples.
+    """Average the jackknife list, the axis=0 is the jackknife samples.
 
     Args:
-        jk_ls (list): jackknife samples
+        jk_ls (list): jackknife samples, can be multi-dimensional
         axis (int, optional): which axis to average on. Defaults to 0.
 
     Returns:
         gvar list: gvar list after averaging
     """
     jk_ls = np.array(jk_ls)
+    shape = np.shape(jk_ls)
+    jk_ls = np.reshape(jk_ls, (shape[0], -1))
 
     N_sample = len(jk_ls)
     mean = np.mean(jk_ls, axis=0)
     cov = np.cov(jk_ls, rowvar=False) * (N_sample - 1)
+    gv_ls = gv.gvar(mean, cov)
 
-    return gv.gvar(mean, cov)
+    return np.reshape(gv_ls, shape[1:])
 
 
 def jk_dic_avg(dic):
@@ -121,26 +124,30 @@ def jk_dic_avg(dic):
 
 
 def bs_ls_avg(bs_ls):
-    """Average the 2-D bootstrap list, the axis=0 is the bootstrap samples.
+    """Average the bootstrap list, the axis=0 is the bootstrap samples.
 
     Args:
-        bs_ls (list): bootstrap samples
+        bs_ls (list): bootstrap samples, can be multi-dimensional
         axis (int, optional): which axis to average on. Defaults to 0.
 
     Returns:
         gvar list: gvar list after averaging
     """
     bs_ls = np.array(bs_ls)
+    shape = np.shape(bs_ls)
+    bs_ls = np.reshape(bs_ls, (shape[0], -1))
 
     mean = np.mean(bs_ls, axis=0)
 
     # * if only one variable, use standard deviation
-    if len(np.shape(bs_ls)) == 1: 
+    if len(shape) == 1: 
         sdev = np.std(bs_ls, axis=0)
-        return gv.gvar(mean, sdev)
+        gv_ls = gv.gvar(mean, sdev)
     else:
         cov = np.cov(bs_ls, rowvar=False)
-        return gv.gvar(mean, cov)
+        gv_ls = gv.gvar(mean, cov)
+
+    return np.reshape(gv_ls, shape[1:])
 
 
 def bs_dic_avg(dic):
