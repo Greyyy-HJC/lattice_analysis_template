@@ -1,8 +1,9 @@
 # Specialized gitignore for this template
 data/*.h5
-output/dump/*.dump
-output/plots/*.dump
-output/else/*.dump
+data/**/*.h5
+output/dump/*.pkl
+cache/*.pkl
+test_data/*.h5
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
