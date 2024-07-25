@@ -6,7 +6,7 @@ from liblattice.gs_fit.fit_funcs import pt2_re_fcn
 from liblattice.gs_fit.prior_setting import two_state_fit
 
 
-def single_2pt_fit(pt2_avg, tmin, tmax, Ls, label=None):
+def single_2pt_fit(pt2_avg, tmin, tmax, Lt, label=None):
     """
     Perform a single 2-point fit on the given data.
 
@@ -14,7 +14,7 @@ def single_2pt_fit(pt2_avg, tmin, tmax, Ls, label=None):
         pt2_avg (gvar list): The averaged 2-point data.
         tmin (int): The minimum time value for the fit range.
         tmax (int): The maximum time value for the fit range.
-        Ls (int): The size of the lattice.
+        Lt (int): The temporal size of the lattice.
         label (str, optional): A label for the fit. Defaults to None.
 
     Returns:
@@ -28,7 +28,7 @@ def single_2pt_fit(pt2_avg, tmin, tmax, Ls, label=None):
     priors = two_state_fit()
 
     def fcn(t, p):
-        return pt2_re_fcn(t, p, Ls)
+        return pt2_re_fcn(t, p, Lt)
 
     # Compute the range only once, outside of the loop
     t_range = np.arange(tmin, tmax)

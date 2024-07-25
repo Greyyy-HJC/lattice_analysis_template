@@ -7,7 +7,7 @@ from liblattice.gs_fit.fit_funcs import ra_re_fcn, ra_im_fcn
 
 
 def single_ra_fit(
-    ra_re_avg_dic, ra_im_avg_dic, tsep_ls, tau_cut, Ls, pbz_label, pt2_fit_res=None
+    ra_re_avg_dic, ra_im_avg_dic, tsep_ls, tau_cut, Lt, pbz_label, pt2_fit_res=None
 ):
     """
     Perform a single ratio fit.
@@ -18,7 +18,7 @@ def single_ra_fit(
         tsep_ls (list): List of time separations.
         tau_cut (int): Cut-off value for tau.
         pt2_fit_res (object): Object containing the 2pt fit results.
-        Ls (int): Size of the lattice.
+        Lt (int): The temporal size of the lattice.
         pbz_label (dict): Dictionary containing the labels for px, py, pz, b, and z.
 
     Returns:
@@ -40,8 +40,8 @@ def single_ra_fit(
     def ra_fcn(x, p):
         ra_t, ra_tau = x
         return {
-            "re": ra_re_fcn(ra_t, ra_tau, p, Ls),
-            "im": ra_im_fcn(ra_t, ra_tau, p, Ls),
+            "re": ra_re_fcn(ra_t, ra_tau, p, Lt),
+            "im": ra_im_fcn(ra_t, ra_tau, p, Lt),
         }
 
     # Set 2pt fit results as priors

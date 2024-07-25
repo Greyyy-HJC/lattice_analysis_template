@@ -51,7 +51,7 @@ def plot_ratio_fit_on_data_log(
     z,
     err_tsep_ls,
     fill_tsep_ls,
-    Ls,
+    Lt,
     err_tau_cut=1,
     fill_tau_cut=1,
 ):
@@ -67,7 +67,7 @@ def plot_ratio_fit_on_data_log(
         ss_fit_res (FitResult): Fit result for the 2pt SS fit.
         err_tsep_ls (list): List of time separations for error bars.
         fill_tsep_ls (list): List of time separations for filled regions.
-        Ls (list): List of lattice sizes.
+        Lt (int): The temporal size of the lattice, for fcn.
         err_tau_cut (int, optional): Cut for the range of tau values used for error bars. Defaults to 1.
         fill_tau_cut (int, optional): Cut for the range of tau values used for filled regions. Defaults to 1.
 
@@ -111,7 +111,7 @@ def plot_ratio_fit_on_data_log(
         for id, tsep in enumerate(fill_tsep_ls):
             fit_tau = np.linspace(fill_tau_cut - 0.5, tsep - fill_tau_cut + 0.5, 100)
             fit_t = np.ones_like(fit_tau) * tsep
-            fit_ratio = ra_fcn(fit_t, fit_tau, ra_fit_res.p, Ls)
+            fit_ratio = ra_fcn(fit_t, fit_tau, ra_fit_res.p, Lt)
 
             x_ls.append(fit_tau - tsep / 2)
             y_ls.append(gv.mean(fit_ratio))
