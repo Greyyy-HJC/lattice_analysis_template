@@ -93,31 +93,45 @@ def plot_ratio_fit_on_data_log(
         ra_re_avg_dic[f"tsep_{tsep}"] = ra_re_avg[id]
         ra_im_avg_dic[f"tsep_{tsep}"] = ra_im_avg[id]
 
-    def plot_part(part, ra_avg, ra_fcn, pdf_key):
+    def plot_part(part, ra_avg, ra_fcn, pdf_key, remove_boundary_term=False):
         x_ls = []
         y_ls = []
         yerr_ls = []
         label_ls = []
         plot_style_ls = []
 
+        e0 = ra_fit_res.p["E0"]
+        e1 = ra_fit_res.p["E0"] + ra_fit_res.p["dE1"]
+        z0 = ra_fit_res.p["re_z0"]
+        z1 = ra_fit_res.p["re_z1"]
+
         for id, tsep in enumerate(err_tsep_ls):
             tau_range = np.arange(err_tau_cut, tsep + 1 - err_tau_cut)
+            ra_gv = ra_avg[id, err_tau_cut:tsep + 1 - err_tau_cut]
+
+            if remove_boundary_term:
+                deno_boundary = z0 ** 2 * ( np.exp( -e0 * tsep ) + np.exp( -e0 * ( Lt - tsep ) ) ) + z1 ** 2 * ( np.exp( -e1 * tsep ) + np.exp( -e1 * ( Lt - tsep ) ) )
+                deno_no_boundary = z0 ** 2 * np.exp( -e0 * tsep ) + z1 ** 2 * np.exp( -e1 * tsep )
+
+                #! modify the plot data to be consistent with the fill between below
+                ra_gv = ra_gv * deno_boundary / deno_no_boundary
+
             x_ls.append(tau_range - tsep / 2)
-            y_ls.append(gv.mean(ra_avg[id, err_tau_cut : tsep + 1 - err_tau_cut]))
-            yerr_ls.append(gv.sdev(ra_avg[id, err_tau_cut : tsep + 1 - err_tau_cut]))
-            label_ls.append(f"tsep = {tsep}")
-            plot_style_ls.append("errorbar")
+            y_ls.append(gv.mean(ra_gv))
+            yerr_ls.append(gv.sdev(ra_gv))
+            label_ls.append(f'tsep = {tsep}')
+            plot_style_ls.append('errorbar')
 
         for id, tsep in enumerate(fill_tsep_ls):
             fit_tau = np.linspace(fill_tau_cut - 0.5, tsep - fill_tau_cut + 0.5, 100)
             fit_t = np.ones_like(fit_tau) * tsep
-            fit_ratio = ra_fcn(fit_t, fit_tau, ra_fit_res.p, Lt)
+            fit_ratio = ra_fcn(fit_t, fit_tau, ra_fit_res.p, Lt, remove_boundary_term)  #! when plot fit on data, remove the boundary term in the denominator, so that to be more intuitive
 
             x_ls.append(fit_tau - tsep / 2)
             y_ls.append(gv.mean(fit_ratio))
             yerr_ls.append(gv.sdev(fit_ratio))
             label_ls.append(None)
-            plot_style_ls.append("fill_between")
+            plot_style_ls.append("fill_between") 
 
         band_x = np.arange(-6, 7)
         x_ls.append(band_x)
