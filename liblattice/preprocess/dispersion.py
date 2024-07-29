@@ -14,7 +14,7 @@ from liblattice.general.constants import *
 from liblattice.general.plot_settings import *
 
 
-plt_axes = [0.12, 0.12, 0.8, 0.8]  # left, bottom, width, height
+plt_axes = [0.15, 0.15, 0.8, 0.8]  # left, bottom, width, height
 fs_p = {"fontsize": 13}  # font size of text, label, ticks
 ls_p = {"labelsize": 13}
 
