@@ -76,20 +76,19 @@ def plot_ratio_fit_on_data_log(
     """
     from liblattice.preprocess.resampling import bs_ls_avg
 
-    tsep_ls = [6, 8, 10, 12]
-    ra_re, ra_im = get_ratio_data(px, py, pz, b, z, tsep_ls, jk_bs="bs")
+    ra_re, ra_im = get_ratio_data(px, py, pz, b, z, err_tsep_ls, jk_bs="bs")
 
     # Reshape and average the data only once.
     ra_re_avg = bs_ls_avg(ra_re.reshape(len(ra_re), -1)).reshape(
-        len(tsep_ls), -1
+        len(err_tsep_ls), -1
     )  # (tsep, tau)
     ra_im_avg = bs_ls_avg(ra_im.reshape(len(ra_im), -1)).reshape(
-        len(tsep_ls), -1
+        len(err_tsep_ls), -1
     )  # (tsep, tau)
 
     ra_re_avg_dic = {}
     ra_im_avg_dic = {}
-    for id, tsep in enumerate(tsep_ls):
+    for id, tsep in enumerate(err_tsep_ls):
         ra_re_avg_dic[f"tsep_{tsep}"] = ra_re_avg[id]
         ra_im_avg_dic[f"tsep_{tsep}"] = ra_im_avg[id]
 
